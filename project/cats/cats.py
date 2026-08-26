@@ -166,6 +166,20 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    minword=word_list[0]
+    mindif=diff_function(typed_word,word_list[0],limit)
+    for word in word_list:
+        if typed_word==word:
+            return typed_word
+        else:
+             if mindif>diff_function(typed_word,word,limit):
+                 mindif=diff_function(typed_word,word,limit)
+                 minword=word
+    if mindif<=limit:
+        return minword
+    else:
+        return typed_word
+    
     # END PROBLEM 5
 
 
@@ -192,7 +206,20 @@ def feline_fixes(typed, source, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    if limit==0:
+        if typed == source:
+            return 0
+        else:
+            return 1
+    else:
+       if typed=='' or source=='':
+           return min(abs(len(typed)-len(source)),limit+1)
+               
+       else:
+           if typed[0]==source[0]:
+               return feline_fixes(typed[1:],source[1:],limit)
+           else:
+               return 1+feline_fixes(typed[1:],source[1:],limit-1)
     # END PROBLEM 6
 
 
@@ -216,29 +243,63 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, 'Remove this line'
-    if ___________: # Base cases should go here, you may add more base cases as needed.
-        # BEGIN
-        "*** YOUR CODE HERE ***"
+  
+    if limit==0:
+            if typed == source:
+                return 0
+            else:
+                return 1
+
         # END
     # Recursive cases should go below here
-    if ___________: # Feel free to remove or add additional cases
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
     else:
-        add = ... # Fill in these lines
-        remove = ...
-        substitute = ...
         # BEGIN
         "*** YOUR CODE HERE ***"
+        if typed=='' or source=='':
+                   return min(abs(len(typed)-len(source)),limit+1)
+        else:
+           if typed[0]==source[0]:
+               return minimum_mewtations(typed[1:],source[1:],limit)
+           else:
+               if(len(typed)<len(source)):
+                   if len(typed)>1 and len(source)>1 and typed[1]==source[1]:
+                       if typed[0]==source[1]:
+                           return 1+minimum_mewtations(typed,source[1:],limit-1)
+                       else:
+                           return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
+                   elif len(source)>1 and typed[0]==source[1]:
+                       return 1+minimum_mewtations(typed,source[1:],limit-1)
+                   elif source[len(typed)-1]==typed[len(typed)-1]:
+                       return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
+                   else:
+                       return 1+minimum_mewtations(typed,source[1:],limit-1)
+               elif len(typed)>len(source):
+                    if len(typed)>1 and len(source)>1 and typed[1]==source[1]:
+                        return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
+                    elif typed[len(source)-1]==source[len(source)-1]:
+                        return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
+                    else:
+                        return 1+minimum_mewtations(typed[1:],source,limit-1)
+               else:
+                   if len(source)>1 and typed[0]==source[1]:
+                       if len(typed)>1 and typed[1]==source[1]:
+                           return  1+minimum_mewtations(typed[1:],source[1:],limit-1)
+                       else:
+                           return 1+minimum_mewtations(typed,source[1:],limit-1)
+                   elif len(typed)>1 and typed[1]==source[0]:
+                       if len(source)>1 and typed[1]==source[1]:
+                           return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
+                       else:
+                           return 1+minimum_mewtations(typed[1:],source,limit-1)
+                   else:
+                       return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
         # END
 
-
+#这个函数没写
 def final_diff(typed, source, limit):
     """A diff function that takes in a string TYPED, a string SOURCE, and a number LIMIT.
     If you implement this function, it will be used."""
-    assert False, 'Remove this line to use your final_diff function.'
+   
 
 FINAL_DIFF_LIMIT = 6 # REPLACE THIS WITH YOUR LIMIT
 

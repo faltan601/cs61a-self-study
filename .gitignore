@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 *.pyo
 .DS_Store
+
+# ok 工具的本地状态文件
+.ok_history
+.ok_storage
+.ok_messages
+.ok_members
