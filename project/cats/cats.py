@@ -243,8 +243,9 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
+    #写的太丑了
   
-    if limit==0:
+    '''if limit==0:
             if typed == source:
                 return 0
             else:
@@ -293,7 +294,21 @@ def minimum_mewtations(typed, source, limit):
                            return 1+minimum_mewtations(typed[1:],source,limit-1)
                    else:
                        return 1+minimum_mewtations(typed[1:],source[1:],limit-1)
-        # END
+        # END'''
+    if limit<0:
+        return limit+1
+    if typed ==source:
+        return 0
+    if not typed or not source:
+        return len(typed)+len(source)
+    if typed[0]==source[0]:
+        return minimum_mewtations(typed[1:],source[1:],limit)
+
+    add = 1+minimum_mewtations(typed,source[1:],limit-1)
+    remove=1+minimum_mewtations(typed[1:],source,limit-1)
+    substitute=1+minimum_mewtations(typed[1:],source[1:],limit-1)
+    return min(add,remove,substitute)
+    
 
 #这个函数没写
 def final_diff(typed, source, limit):
