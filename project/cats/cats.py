@@ -314,7 +314,19 @@ def minimum_mewtations(typed, source, limit):
 def final_diff(typed, source, limit):
     """A diff function that takes in a string TYPED, a string SOURCE, and a number LIMIT.
     If you implement this function, it will be used."""
+    if limit<0:
+           return limit+1
+    if typed ==source:
+           return 0
+    if not typed or not source:
+           return len(typed)+len(source)
+    if typed[0]==source[0]:
+           return minimum_mewtations(typed[1:],source[1:],limit)
    
+    add = 1+minimum_mewtations(typed,source[1:],limit-1)
+    remove=1+minimum_mewtations(typed[1:],source,limit-1)
+    substitute=1+minimum_mewtations(typed[1:],source[1:],limit-1)
+    return min(add,remove,substitute)
 
 FINAL_DIFF_LIMIT = 6 # REPLACE THIS WITH YOUR LIMIT
 
@@ -349,6 +361,19 @@ def report_progress(typed, source, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    rights=0
+    i=0
+    while i<len(typed):
+        if typed[i]==source[i]:
+            rights+=1
+        else:
+            break
+        i+=1
+    progress=rights/len(source)
+
+
+    upload({'id':user_id,'progress':progress})
+    return progress
     # END PROBLEM 8
 
 
@@ -371,6 +396,15 @@ def time_per_word(words, timestamps_per_player):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    time=[]
+    for player in timestamps_per_player:
+        i=0
+        ma=[]
+        while i<len(player)-1:
+            ma+=[player[i+1]-player[i]]
+            i+=1
+        time+=[ma]
+    return match(words,time)
     # END PROBLEM 9
 
 
@@ -393,6 +427,16 @@ def fastest_words(match):
     word_indices = range(len(get_all_words(match)))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    fast=[]
+    for player in player_indices:
+        fast+=[[]]
+    for word in word_indices:
+        min=0
+        for player in player_indices:
+            if time(match,player,word)<time(match,min,word):
+                min=player
+        fast[min]+=[get_word(match,word)]
+    return fast
     # END PROBLEM 10
 
 
@@ -441,7 +485,7 @@ def match_string(match):
     """A helper function that takes in a match data abstraction and returns a string representation of it"""
     return f"match({get_all_words(match)}, {get_all_times(match)})"
 
-enable_multiplayer = False  # Change to True when you're ready to race.
+enable_multiplayer = True  # Change to True when you're ready to race.
 
 ##########################
 # Command Line Interface #
